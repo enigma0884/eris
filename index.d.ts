@@ -48,6 +48,8 @@ declare namespace Eris {
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
     messageReferenceID?: string;
     tts?: boolean;
   };
@@ -153,6 +155,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -803,6 +806,10 @@ declare namespace Eris {
     guildID?: string;
     messageID?: string;
   }
+  interface MessageReferenceReply extends MessageReferenceBase {
+    messageID: string;
+    failIfNotExists?: boolean;
+  }
   interface Sticker {
     asset: string;
     description: string;
@@ -881,6 +888,11 @@ declare namespace Eris {
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number;
+  }
+  interface RoleTags {
+    bot_id?: string;
+    integration_id?: string;
+    premium_subscriber?: boolean;
   }
 
   // Voice
@@ -1622,6 +1634,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -1938,9 +1951,10 @@ declare namespace Eris {
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string): Promise<GuildVanity>;
+    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
-    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
+
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
@@ -2160,6 +2174,7 @@ declare namespace Eris {
     flags: number;
     guildID: T extends GuildTextable ? string : undefined;
     id: string;
+    interaction: MessageInteraction | null;
     jumpLink: string;
     member: T extends GuildTextable ? Member : null;
     mentionEveryone: boolean;
@@ -2171,7 +2186,7 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
-    interaction: MessageInteraction | null;
+
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2185,7 +2200,13 @@ declare namespace Eris {
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
-    getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getReaction(
+      reaction: string,
+      limit?: number,
+      /** @deprecated */
+      before?: string,
+      after?: string
+    ): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactionEmoji(reaction: string): Promise<void>;
@@ -2256,6 +2277,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -2314,6 +2336,7 @@ declare namespace Eris {
     name: string;
     permissions: Permission;
     position: number;
+    tags?: RoleTags;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
@@ -2438,6 +2461,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
